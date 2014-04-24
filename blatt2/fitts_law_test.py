@@ -39,9 +39,14 @@ class Test(QtGui.QWidget):
 
     def mousePressEvent(self, event):
         p = event.globalPos()
-        print p
-        if((p.x >= self.posX and p.x <= self.posX + self.radius)
-            and (p.y >= self.posY and p.y <= self.posY + self.radius)):
+        #print p
+        print "X: "+str(p.x())+", Y: "+str(p.y())
+        x1 = self.posX
+        x2 = self.posX + self.radius
+        y1 = self.posY
+        y2 = self.posY + self.radius
+        print "x1: "+str(x1)+", x2: "+str(x2)+", y1: "+str(y1)+", y2: "+str(y2)
+        if((p.x() >= x1 and p.x() <= x2) and (p.y() >= y1 and p.y() <= y2)):
             print "in Circle"
 
     def paintEvent(self, event):
@@ -65,7 +70,8 @@ class Test(QtGui.QWidget):
 
 
 def main():
-    file = raw_input("Testfile: ")
+    #file = raw_input("Testfile: ")
+    file = "test.txt"
     app = QtGui.QApplication(sys.argv)
     test = Test(file)
     sys.exit(app.exec_())
