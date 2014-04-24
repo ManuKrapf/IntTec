@@ -15,7 +15,8 @@ class Test(QtGui.QWidget):
 
     def initUI(self):
         self.text = "Click on Red Circles"
-        self.setGeometry(0, 0, 1500, 800)
+        #self.setGeometry(0, 0, 1500, 800)
+        self.showMaximized()
         self.setWindowTitle("Fitts's Law Test")
         self.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.show()
@@ -35,6 +36,32 @@ class Test(QtGui.QWidget):
 
     def startTest(self):
         self.start = True
+
+    def mousePressEvent(self, event):
+        p = event.globalPos()
+        print p
+        if((p.x >= self.posX and p.x <= self.posX + self.radius)
+            and (p.y >= self.posY and p.y <= self.posY + self.radius)):
+            print "in Circle"
+
+    def paintEvent(self, event):
+        qp = QtGui.QPainter()
+        qp.begin(self)
+        self.drawText(event, qp)
+        self.drawCircle(event, qp, 10, 20, 50)
+        qp.end()
+
+    def drawText(self, event, qp):
+        qp.setPen(QtGui.QColor(168, 34, 3))
+        qp.setFont(QtGui.QFont('Decorative', 32))
+        qp.drawText(event.rect(), QtCore.Qt.AlignCenter, "Click on circle!")
+
+    def drawCircle(self, event, qp, posX, posY, radius):
+        qp.setBrush(QtGui.QColor(34, 34, 200))
+        qp.drawEllipse(posX, posY, radius, radius)
+        self.posX = posX
+        self.posY = posY
+        self.radius = radius
 
 
 def main():
