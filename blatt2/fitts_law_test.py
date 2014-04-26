@@ -96,8 +96,9 @@ class Test(QtGui.QWidget):
             x2 = self.target.x() + self.radius
             y1 = self.target.y() - self.radius
             y2 = self.target.y() + self.radius
-            if((p.x() >= x1 and p.x() <= x2) and (p.y() >= y1 and p.y() <= y2)):
-                print "in Circle"
+            if((p.x() >= x1 and p.x() <= x2) and
+                    (p.y() >= y1 and p.y() <= y2)):
+                #print "in Circle"
                 self.targetClicked(p)
 
     def targetClicked(self, pos):
@@ -131,9 +132,10 @@ class Test(QtGui.QWidget):
     def writeLogData(self):
         csv.register_dialect('logging', delimiter=';', quoting=csv.QUOTE_ALL)
         logfile = open("user"+str(self.id)+".csv", "wb")
-        writer = csv.DictWriter(logfile, ["user", "timestamp", "distance",
-                                "widths", "time", "pos_pointer", "pos_target",
-                                          "moffset-x", "moffset-y"], 'logging')
+        writer = csv.DictWriter(logfile, ["user", "timestamp", "trial",
+                                "distance", "widths", "time", "pos_pointer",
+                                          "pos_target", "moffset-x",
+                                          "moffset-y"], 'logging')
         writer.writeheader()
         writer.writerows(self.results)
         logfile.close()
@@ -153,12 +155,6 @@ class Test(QtGui.QWidget):
     def drawText(self, event, qp, text):
         qp.setPen(QtGui.QColor(168, 34, 3))
         qp.setFont(QtGui.QFont('Decorative', 32))
-        qp.drawText(event.rect(), QtCore.Qt.AlignHCenter, text)
-
-    def drawEndText(self, event, qp):
-        qp.setPen(QtGui.QColor(168, 34, 3))
-        qp.setFont(QtGui.QFont('Decorative', 32))
-        text = "Click on red circle: "+str(self.counter)+"/64"
         qp.drawText(event.rect(), QtCore.Qt.AlignHCenter, text)
 
     def drawStart(self, event, qp):
