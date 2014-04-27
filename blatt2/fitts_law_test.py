@@ -121,6 +121,7 @@ class Test(QtGui.QWidget):
             "distance": self.combs[self.counter][0],
             "widths": self.combs[self.counter][1],
             "time": self.time,
+            "trial": self.counter,
             "pos_pointer": self.pointerpos,
             "pos_target": str(self.target.x())+","+str(self.target.y()),
             "moffset-x": self.offX,
