@@ -50,7 +50,7 @@
 {\s38\fi-431\li720 Triangle List;}
 {\s13\fi-288\li288\sbasedon28 Endnote;}}
 {\*\listtable
-{\list\listtemplateid1002\listsimple{\listlevel\levelnfc0\levelstartat1\levelspace0\levelfollow0{\leveltext\'02\'00.;}{\levelnumbers\'01;}}\listid1000}}
+{\list\listtemplateid1004\listsimple{\listlevel\levelnfc0\levelstartat1\levelspace0\levelfollow0{\leveltext\'02\'00.;}{\levelnumbers\'01;}}\listid1000}}
 {\*\listoverridetable
 {\listoverride\listoverridecount0\listid1000\levelnfc0\levelstartat1\levelspace0\levelfollow0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\ls1}}
 
@@ -60,4 +60,5 @@
 {\listtext\pard\sb440\sa60 1.	}\pard\plain{\ltrpar\ql\sb440\sa60\s30{\*\abilist\abilistid1000\abilistparentid0\abilistlevel1\abistartat1{\abifieldfont Liberation Sans}{\abilistdecimal }{\abilistdelim %L.}{\abiliststyle Numbered List}}{\*\pn\pnql\pnstart1\pnlvlbody\pndec{\pntxtb }{\pntxta .}}\ls1\ilvl0\itap0\tx431{\s30\f0\fs28\b\lang1031{\*\listtag0}\abinodiroverride\ltrch Limitations}{\s30\f0\fs28\b\lang1031{\*\listtag1001}\par}
 }\pard\plain\ltrpar\ql\s28\itap0{\s28\f1\fs24\lang1031{\*\listtag0}\abinodiroverride\ltrch Users 3 and 4 did not have a computer mouse to test. Instead, they had to user a notebook\uc1\u8216\'91s trackpad to conduct the test.}{\s28\f1\fs24\lang1031{\*\listtag0}\par}
 \pard\plain\ltrpar\ql\s28\itap0{\s28\f1\fs24\lang1031{\*\listtag0}\par}
-\pard\plain\ltrpar\ql\s28\itap0{\s28\f1\fs24\lang1031{\*\listtag0}\par}}
+{\listtext\pard\sb440\sa60 2.	}\pard\plain{\ltrpar\ql\sb440\sa60\s30{\*\abilist\abilistid1000\abilistlevel1\abistartat1{\abifieldfont Liberation Sans}{\abilistdecimal }{\abilistdelim %L.}{\abiliststyle Numbered List}}{\*\pn\pnql\pnstart1\pnlvlbody\pndec{\pntxtb }{\pntxta .}}\ls1\ilvl0\itap0\tx431{\s30\f0\fs28\b\lang1031{\*\listtag0}\abinodiroverride\ltrch Interesting Events}{\s30\f0\fs28\b\lang1031{\*\listtag1003}\par}
+}\pard\plain\ltrpar\ql\s28\itap0{\s28\f1\fs24\lang1031{\*\listtag0}\abinodiroverride\ltrch There weren\uc1\u8216\'91t any events during the test that were particularly interesting. Participant 4 was very tired and had blood alcohol content, which seemed to affect the participant\uc1\u8216\'91s performance.}{\s28\f1\fs24\lang1031{\*\listtag0}\par}}
