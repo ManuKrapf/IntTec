@@ -42,7 +42,7 @@ class Klmcalc(object):
                 op = val[len(val)-1:len(val)]
             else:
                 op = val
-            self.addValue(count, op)
+            self.addValue(count, op.lower())
 
     def addValue(self, count, op):
         if op == "k":

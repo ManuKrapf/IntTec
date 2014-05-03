@@ -1,0 +1,6 @@
+#TASK 3: format by mouse click after typing
+#==========================================
+
+m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(pressed)
+hpbpb # switch to mouse, move to text, mark text
+pbb # move to "bold"-button and click

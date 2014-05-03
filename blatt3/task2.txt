@@ -1,0 +1,6 @@
+#TASK 2: format by CTRL-B + SHIFT after typing
+#=============================================
+
+m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(pressed)
+k # Go one left to the text to make bold
+7k # 7 keystrokes to mark the text and make it bold
