@@ -1,0 +1,20 @@
+###########################################
+#                                         #
+#               KLM-REPORT                #
+#                                         #
+###########################################
+
+#type in "ich bin TOLL" and format "TOLL" bold
+
+#TASK 1: format by CTRL-B + SHIFT
+#================================
+
+m15k # think of text to type in, enter 15 keystrokes for text
+
+#TASK 3: format by mouse click after typing
+#==========================================
+
+m13k #think of text to type in, enter 13 keystrokes for text
+hpbp #switch to mouse, navigate to text and mark it
+pbb #navigate to "bold"-button and click it
+
