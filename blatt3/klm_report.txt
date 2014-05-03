@@ -9,7 +9,7 @@
 #TASK 1: format by CTRL-B + SHIFT
 #================================
 
-m15k # think of text to type in, enter 15 keystrokes for text
+m15k # think of text to type in, enter 15 keystrokes for text, including CTRL-B and SHIFT
 
 #TASK 3: format by mouse click after typing
 #==========================================
