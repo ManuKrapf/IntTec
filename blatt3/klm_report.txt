@@ -12,7 +12,7 @@
 m16k # think of text to type in, enter 15 keystrokes for text, including CTRL-B and SHIFT
 
 predicted time: 5.68s
-actual time: 
+actual time: 6,38s
 
 #TASK 2: format by CTRL-B + SHIFT after typing
 #=============================================
@@ -22,7 +22,7 @@ k # Go one left to the text to make bold
 7k # 7 keystrokes to mark the text and make it bold
 
 predicted time: 7.36s
-actual time: 
+actual time: 10,13s
 
 #TASK 3: format by mouse click after typing
 #==========================================
@@ -32,7 +32,7 @@ hpbp #switch to mouse, navigate to text and mark it
 pbb #navigate to "bold"-button and click it
 
 predicted time: 8.84s
-actual time: 
+actual time: 11,54s
 
 #TASK 3: format by mouse click after typing
 #==========================================
@@ -42,4 +42,4 @@ hpbpb # switch to mouse, move to text, mark text
 pbb # move to "bold"-button and click
 
 predicted time: 9.22s
-actual time: 
+actual time: 11,54s
