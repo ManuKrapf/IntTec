@@ -1,0 +1,18 @@
+######################################
+#                                    #
+#          KLM Questions             #
+#                                    #
+######################################
+
+1.) Card et al. state that the Key-Stroke Level  Model 
+    helps predicting an expert user's preformance
+    of a certain task on a computer system
+
+1.) Card et. al use the following formulation 
+    of Fitts' law:
+    
+    T = a + b * log2 * D / W 
+
+3.) Die KLM doesn't consider a trackpad as a pointing
+    device. This should be evaluated in order to adapt
+    KLM for the use of a laptop.
