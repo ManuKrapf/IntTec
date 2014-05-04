@@ -4,25 +4,25 @@
 #                                         #
 ###########################################
 
-#type in "ich bin TOLL" and format "TOLL" bold
+#type in "ich bin TOLL!" and format "TOLL" bold
 
 #TASK 1: format by CTRL-B + SHIFT
 #================================
 
-m16k # think of text to type in, enter 15 keystrokes for text, including CTRL-B and SHIFT
+m16k # think of text to type in, enter 16 keystrokes for text, including CTRL-B and SHIFT
 
-predicted time: 5.68s
-actual time: 6,38s
+# predicted time: 5.68s
+# actual time: 6,38s
 
 #TASK 2: format by CTRL-B + SHIFT after typing
 #=============================================
 
 m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(pressed)
 k # Go one left to the text to make bold
-7k # 7 keystrokes to mark the text and make it bold
+7k # 7 keystrokes to mark the text and make it bold, including SHIFT(pressed) and CTRL-B
 
-predicted time: 7.36s
-actual time: 10,13s
+# predicted time: 7.36s
+# actual time: 10,13s
 
 #TASK 3: format by mouse click after typing
 #==========================================
@@ -31,8 +31,8 @@ m13k #think of text to type in, enter 13 keystrokes for text
 hpbp #switch to mouse, navigate to text and mark it
 pbb #navigate to "bold"-button and click it
 
-predicted time: 8.84s
-actual time: 11,54s
+# predicted time: 8.84s
+# actual time: 11,54s
 
 #TASK 3: format by mouse click after typing
 #==========================================
@@ -41,5 +41,5 @@ m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(
 hpbpb # switch to mouse, move to text, mark text
 pbb # move to "bold"-button and click
 
-predicted time: 9.22s
-actual time: 11,54s
+# predicted time: 9.22s
+# actual time: 11,54s
