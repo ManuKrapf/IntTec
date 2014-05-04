@@ -4,3 +4,6 @@
 m13k #think of text to type in, enter 13 keystrokes for text
 hpbp #switch to mouse, navigate to text and mark it
 pbb #navigate to "bold"-button and click it
+
+#estimated time: 8.5s
+#calculated time: 8.84
