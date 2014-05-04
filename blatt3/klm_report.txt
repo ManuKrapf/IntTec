@@ -9,11 +9,11 @@
 #TASK 1: format by CTRL-B + SHIFT
 #================================
 
-m16k # think of text to type in, enter 16 keystrokes for text, including CTRL-B and SHIFT
+m16k # think of text to type in, enter 16 keystrokes for text, including CTRL-B and SHIFT(pressed)
 
-# predicted time: 5.68s
-# actual time test member 1: 6.38s
-# actual time test member 2: 4.48s
+# predicted task completion time: 5.68s
+# actual task completion time test member 1: 6.38s
+# actual task completion time test member 2: 4.48s
 
 #TASK 2: format by CTRL-B + SHIFT after typing
 #=============================================
@@ -22,20 +22,9 @@ m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(
 k # Go one left to the text to make bold
 7k # 7 keystrokes to mark the text and make it bold, including SHIFT(pressed) and CTRL-B
 
-# predicted time: 7.36s
-# actual time test member 1: 10.13s
-# actual time test member 2: 7.3s
-
-#TASK 3: format by mouse click after typing
-#==========================================
-
-m13k #think of text to type in, enter 13 keystrokes for text
-hpbp #switch to mouse, navigate to text and mark it
-pbb #navigate to "bold"-button and click it
-
-# predicted time: 8.84s
-# actual time test member 1: 11.54s
-# actual time test member 2: 8.5s
+# predicted task completion time: 7.36s
+# actual task completion time test member 1: 10.13s
+# actual task completion time test member 2: 7.3s
 
 #TASK 3: format by mouse click after typing
 #==========================================
@@ -44,6 +33,6 @@ m14k # think of text to type, enter 14 keystrokes for the text, including SHIFT(
 hpbpb # switch to mouse, move to text, mark text
 pbb # move to "bold"-button and click
 
-# predicted time: 9.22s
-# actual time test member 1: 11.54s
-# actual time test member 2: 8.5s
+# predicted task completion time: 9.22s
+# actual task completion time test member 1: 11.54s
+# actual task completion time test member 2: 8.5s
