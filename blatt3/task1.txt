@@ -2,3 +2,6 @@
 #================================
 
 m16k # think of text to type in, enter 15 keystrokes for text, including CTRL-B and SHIFT
+
+#estimated time: 4.48s
+#calculated time: 5.68s
