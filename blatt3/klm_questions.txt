@@ -16,3 +16,5 @@
 3.) Die KLM doesn't consider a trackpad as a pointing
     device. This should be evaluated in order to adapt
     KLM for the use of a laptop.
+
+test
