@@ -7,7 +7,11 @@ from PyQt4 import QtGui, QtCore
 class BubbleLevel():
  
     def __init__(self, mac_adress):
+	self.connectWiimote()
 	
+    def connectWiimote(self):
+	addr, name = wiimote.find()
+	wm = wiimote.connect(addr)	
 	        
     
 def main():
