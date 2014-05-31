@@ -6,9 +6,9 @@ from PyQt4 import QtGui, QtCore
 
 class BubbleLevel():
  
-    def __init__(self, example_text):
-     
-        
+    def __init__(self, mac_adress):
+	
+	        
     
 def main():
 
