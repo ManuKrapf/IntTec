@@ -3,14 +3,24 @@
 
 import wiimote
 import pyqtgraph as pg
+from pyqtgraph.flowchart import Flowchart
 from PyQt4 import QtGui, QtCore
 
 class Analyze():
  
     def __init__(self, mac_address):
 	wm = wiimote.connect(mac_address)
+	self.initFlochart()
 	self.getData() # get accelerometer data to plot
 	self.plotData()
+
+    def initFlowchart(self):
+	fc = Flowchart(terminals={
+    	    'nameOfInputTerminal': {'io': 'in'},
+    	    'nameOfOutputTerminal': {'io': 'out'}
+	})
+	ctrl = fc.ctrlWidget()
+	myLayout.addWidget(ctrl)
 
     def getData(self):
 	
