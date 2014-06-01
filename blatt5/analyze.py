@@ -15,9 +15,7 @@ class Analyze():
     def getData(self):
 	
     
-    def plotData(self, xVals, yVals, zVals):
-	pw = pg.plot(xVals, yVals, zVals pen='r')  # plot x vs y in red
-
+    def plotData(self, data1, data2, data3):
 	win = pg.GraphicsWindow()  # Automatically generates grids with multiple items
 	win.addPlot(data1, row=0, col=0)
 	win.addPlot(data2, row=0, col=1)
