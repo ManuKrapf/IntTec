@@ -22,6 +22,10 @@ class Analyze():
 	ctrl = fc.ctrlWidget()
 	myLayout.addWidget(ctrl)
 
+	fc.setInput(""" accelerometer data """)
+	output = fc.output()
+	output = fc.process(nameOfInputTerminal=newValue)
+
     def getData(self):
 	
     
