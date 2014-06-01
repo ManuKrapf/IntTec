@@ -7,7 +7,6 @@ from PyQt4 import QtGui, QtCore
 class BubbleLevel():
  
     def __init__(self, mac_adress):
-	self.connectWiimote()
 	wm = wiimote.connect(mac_address)
 	self.measureInclination()
 
@@ -22,7 +21,7 @@ class BubbleLevel():
 	"""
 	WiiMote vibriert und alle LEDs leuchten
 	"""
-	wm.rumble()
+	wm.rumble(0.1)
 	for x in range(0,4):
 	    wm.leds[x] = True
     
