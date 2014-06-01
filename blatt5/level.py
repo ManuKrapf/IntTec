@@ -8,8 +8,7 @@ class BubbleLevel():
  
     def __init__(self, mac_adress):
 	self.connectWiimote()
-	addr, name = wiimote.find()
-	wm = wiimote.connect(addr)
+	wm = wiimote.connect(mac_address)
 	self.measureInclination()
 
     def measureInclination(self):
@@ -28,7 +27,8 @@ class BubbleLevel():
 	    wm.leds[x] = True
     
 def main():
-
+    app = QtGui.QApplication(sys.argv)
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()
