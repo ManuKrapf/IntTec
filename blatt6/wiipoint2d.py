@@ -138,12 +138,19 @@ class WiimoteNode(Node):
 
 fclib.registerNodeType(WiimoteNode, [('Sensor',)])
 
+
 class Pointer2d(object):
 
     def __init__(self, btaddr):
         super(Pointer2d, self).__init__()
         self.btaddr = "b8:ae:6e:1b:ad:a0"
         self.wm = wiimote.connect(self.btaddr)
+        self._ir_vals = []
+        self.no_avg = 10
+        self.initPlot()
+        t = QtCore.QTimer()
+        t.timeout.connect(self.updateData)
+        t.start(50)
 
     def initPlot(self):
         win = QtGui.QMainWindow()
@@ -163,12 +170,13 @@ class Pointer2d(object):
         layout.addWidget(fc.widget(), 0, 0, 2, 1)
 
         pw1 = pg.PlotWidget()
-        pw2 = pg.PlotWidget()
+        self.pw2 = pg.PlotWidget()
         layout.addWidget(pw1, 0, 1)
-        layout.addWidget(pw2, 1, 1)
+        layout.addWidget(self.pw2, 1, 1)
         pw1.setYRange(0, 1024)
 
-        pw2.plot([20], [50], pen=(200,200,200), symbolBrush=(255,0,0), symbolPen='w')
+        data = self.getIrData()
+        self.pw2.plot([data[0]], [data[1]], pen=(200,200,200), symbolBrush=(255,0,0), symbolPen='w')
 
         pw1Node = fc.createNode('PlotWidget', pos=(0, -150))
         pw1Node.setPlot(pw1)
@@ -184,8 +192,28 @@ class Pointer2d(object):
         if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
             QtGui.QApplication.instance().exec_()
 
-        def getIrData(self):
-            pass
+    def updateData(self):
+        if(len(self._ir_vals) >= self.no_avg):
+            del self._ir_vals[0]
+        self._ir_vals.append(self.getIrData())
+        avg = self.getAverage()
+        self.pw2.plot([avg[0]], [avg[1]], pen=(200,200,200), symbolBrush=(255,0,0), symbolPen='w')
+
+    def getIrData(self):
+        ir_data = self.wm.ir
+        biggest = [0, 0, -1]
+        for ir_obj in ir_data:
+            if(biggest[2] < ir_obj["size"]):
+                biggest = [ir_obj["x"], ir_obj["y"], ir_obj["size"]]
+        return biggest
+
+    def getAverage(self):
+        sumX = 0
+        sumY = 0
+        for val in self._ir_vals:
+            sumX += val[0]
+            sumY += val[1]
+        return [(sumX/len(self._ir_vals)), (sumY/len(self._ir_vals))]
 
 
 if __name__ == '__main__':
