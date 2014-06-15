@@ -25,18 +25,24 @@ class BufferNode(CtrlNode):
 
     def __init__(self, name):
         terminals = {
-            'dataIn': dict(io='in'),
-            'dataOut': dict(io='out'),
+            'dataInX': dict(io='in'),
+            'dataInY': dict(io='in'),
+            'dataOutX': dict(io='out'),
+            'dataOutY': dict(io='out'),
         }
-        self._buffer = np.array([])
+        self._bufferX = np.array([])
+        self._bufferY = np.array([])
         CtrlNode.__init__(self, name, terminals=terminals)
 
     def process(self, **kwds):
         size = int(self.ctrls['size'].value())
-        self._buffer = np.append(self._buffer, kwds['dataIn'])
-        self._buffer = self._buffer[-size:]
-        output = self._buffer
-        return {'dataOut': output}
+        self._bufferX = np.append(self._buffer, kwds['dataInX'])
+        self._bufferX = self._buffer[-size:]
+        self._bufferY = np.append(self._buffer, kwds['dataInY'])
+        self._bufferY = self._buffer[-size:]
+        outputX = self._bufferX
+        outputY = self._bufferY
+        return {'dataOutX': outputX, 'dataOutY': outputY}
 
 fclib.registerNodeType(BufferNode, [('Data',)])
 
@@ -184,60 +190,35 @@ class WiimoteNode(Node):
 fclib.registerNodeType(WiimoteNode, [('Sensor',)])
 
 
-class Pointer2d(QtGui.QMainWindow):
+class Pointer2d(pg.ScatterPlotItem):
 
-    def __init__(self, btaddr):
-        super(Pointer2d, self).__init__()
+    def __init__(self, sp):
+        super(Pointer2d, self).__init__(pos=[(0, 0)])
         self.btaddr = "b8:ae:6e:1b:ad:a0"
-        self.wm = wiimote.connect(self.btaddr)
-        self._ir_vals = []
-        self.no_avg = 10
+        self.initNode()
         self.t = QtCore.QTimer()
         self.t.timeout.connect(self.updateData)
         self.t.start(50)
-        self.initPlot()
 
-    def initPlot(self):
-        #win = QtGui.QMainWindow()
-        self.setWindowTitle('Pointer2D demo')
-        self.cw = QtGui.QWidget()
-        self.setCentralWidget(self.cw)
-        layout = QtGui.QGridLayout()
-        self.cw.setLayout(layout)
-
-        ## Create an empty flowchart with a single input and output
-        fc = Flowchart(terminals={
-            'dataIn': {'io': 'in'},
-            'dataOut': {'io': 'out'}
-        })
-        w = fc.widget()
-
-        layout.addWidget(fc.widget(), 0, 0, 2, 1)
-
-        pw1 = pg.PlotWidget()
-        self.pw2 = pg.PlotWidget()
-        layout.addWidget(pw1, 0, 1)
-        layout.addWidget(self.pw2, 1, 1)
-        pw1.setYRange(0, 1024)
-
-        data = self.getIrData()
-        self.pw2.plot([data[0]], [data[1]], pen=(200,200,200), symbolBrush=(255,0,0), symbolPen='w')
-
-        pw1Node = fc.createNode('PlotWidget', pos=(0, -150))
-        pw1Node.setPlot(pw1)
-
-        wiimoteNode = fc.createNode('Wiimote', pos=(0, 0), )
-        wiimoteNode.setWiiMote(self.wm)
-        bufferNode = fc.createNode('Buffer', pos=(150, 0))
-
-        fc.connectTerminals(wiimoteNode['irX'], bufferNode['dataIn'])
-        fc.connectTerminals(bufferNode['dataOut'], pw1Node['In'])
-
-        self.show()
-        if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
-            QtGui.QApplication.instance().exec_()
+    def initNode(self):
+        self.ir_node = WiimoteNode("IrNode")
+        self.ir_node.connect_wiimote()
+        self.ir_node.update_all_sensors()
+        nodedata = self.ir_node.process()
+        #print nodedata
+        pos = [(nodedata['irX'], nodedata['irY'])]
+        self.setData(pos=pos)
 
     def updateData(self):
+        self.ir_node.update_all_sensors()
+        nodedata = self.ir_node.process()
+        #print self.data
+        pos = [(nodedata['irX'], nodedata['irY'])]
+        #print pos
+        #self.clear()
+        self.setData(pos=pos)
+"""
+    def updateData2(self):
         if(len(self._ir_vals) >= self.no_avg):
             del self._ir_vals[0]
         self._ir_vals.append(self.getIrData())
@@ -260,7 +241,7 @@ class Pointer2d(QtGui.QMainWindow):
             sumX += val[0]
             sumY += val[1]
         return [(sumX/len(self._ir_vals)), (sumY/len(self._ir_vals))]
-
+"""
 
 if __name__ == '__main__':
     app = QtGui.QApplication([])
@@ -275,6 +256,7 @@ if __name__ == '__main__':
     ## Create an empty flowchart with a single input and output
     fc = Flowchart(terminals={
         'dataIn': {'io': 'in'},
+        'dataIn': {'io': 'in'},
         'dataOut': {'io': 'out'}
     })
     w = fc.widget()
@@ -283,9 +265,24 @@ if __name__ == '__main__':
 
     pw1 = pg.PlotWidget()
     pw2 = pg.PlotWidget()
+    #sp = pg.ScatterPlotItem(pos=[(20, 50)], size=10)
+    p2d = Pointer2d("")
+    pw2.addItem(p2d)
+    #pw2.enableAutoRange()
+    pw2.setYRange(0, 1024)
+    pw2.setXRange(0, 1024)
     layout.addWidget(pw1, 0, 1)
     layout.addWidget(pw2, 1, 1)
     pw1.setYRange(0, 1024)
+
+    """
+    IrNode = WiimoteNode("IrNode")
+    IrNode.connect_wiimote()
+    IrNode.update_all_sensors()
+    data = IrNode.process()
+
+    print data
+    """
 
     #self.pw2.plot([data[0]], [data[1]], pen=(200,200,200), symbolBrush=(255,0,0), symbolPen='w')
 
@@ -296,8 +293,8 @@ if __name__ == '__main__':
     #wiimoteNode.setWiiMote(self.wm)
     bufferNode = fc.createNode('Buffer', pos=(150, 0))
 
-    fc.connectTerminals(wiimoteNode['irX'], bufferNode['dataIn'])
-    fc.connectTerminals(bufferNode['dataOut'], pw1Node['In'])
+    fc.connectTerminals(wiimoteNode['accelX'], bufferNode['dataInX'])
+    fc.connectTerminals(bufferNode['dataOutX'], pw1Node['In'])
 
     win.show()
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
