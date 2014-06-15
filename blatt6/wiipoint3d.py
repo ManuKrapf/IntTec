@@ -3,6 +3,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import math
 import wiimote
 from pyqtgraph.flowchart import Flowchart, Node
 from pyqtgraph.flowchart.library.common import CtrlNode
@@ -94,7 +95,8 @@ class WiimoteNode(Node):
         self.connect_button = QtGui.QPushButton("connect")
         self.layout.addWidget(self.connect_button)
         self.ui.setLayout(self.layout)
-        self.connect_button.clicked.connect(self.connect_wiimote)
+        self.connect_button.clicked.connect(
+            self.connect_wiimote)
         self.btaddr = "b8:ae:6e:1b:ad:a0"
         self.text.setText(self.btaddr)
         self.update_timer = QtCore.QTimer()
@@ -126,8 +128,7 @@ class WiimoteNode(Node):
         biggest = [0, 0, -1]
         for ir_obj in self._ir_vals_obj:
             if(biggest[2] < ir_obj["size"]):
-                biggest = [ir_obj["x"], ir_obj["y"],
-                           ir_obj["size"]]
+                biggest = [ir_obj["x"], ir_obj["y"], ir_obj["size"]]
         if(len(self._ir_vals) >= self.no_avg):
             del self._ir_vals[0]
         #return biggest
@@ -139,8 +140,7 @@ class WiimoteNode(Node):
         for val in self._ir_vals:
             sumX += val[0]
             sumY += val[1]
-        return [(sumX/len(self._ir_vals)),
-                (sumY/len(self._ir_vals))]
+        return [(sumX/len(self._ir_vals)), (sumY/len(self._ir_vals))]
 
     def ctrlWidget(self):
         return self.ui
@@ -148,8 +148,7 @@ class WiimoteNode(Node):
     def connect_wiimote(self):
         self.btaddr = str(self.text.text()).strip()
         if self.wiimote is not None:
-            self.wiimote.buttons.unregister_callback(
-                self.button_click)
+            self.wiimote.buttons.unregister_callback(self.button_click)
             self.wiimote.disconnect()
             self.wiimote = None
             self.connect_button.setText("connect")
@@ -196,14 +195,14 @@ class WiimoteNode(Node):
 fclib.registerNodeType(WiimoteNode, [('Sensor',)])
 
 
-class Pointer2d(pg.ScatterPlotItem):
+class Pointer3d(pg.ScatterPlotItem):
 
     def __init__(self, btaddr):
-        super(Pointer2d, self).__init__(pos=[(0, 0)])
+        super(Pointer3d, self).__init__(pos=[(0, 0)])
         self.btaddr = btaddr
         self.wm = None
         self.ir_vals = []
-        self.no_avg = 10
+        self.no_avg = 20
         self.initNode()
         self.t = QtCore.QTimer()
         self.t.timeout.connect(self.updateData)
@@ -220,22 +219,34 @@ class Pointer2d(pg.ScatterPlotItem):
 
     def printData(self):
         self.ir_node.update_all_sensors()
-        nodedata = self.ir_node.process()
-        self.getBiggestVal(nodedata['irvals'])
+        self.nodedata = self.ir_node.process()
+        self.getBiggestVal(self.nodedata['irvals'])
         avg = self.getAverage()
         pos = [(avg[0], avg[1])]
+        dist = self.getDistance()
+        size = int(dist/10)
+        #print size
         #self.clear()
-        self.setData(pos=pos, size=20, brush=(255, 0, 0))
+        self.setData(pos=pos, size=size)
 
     def getBiggestVal(self, curr_ir):
-        biggest = [0, 0, -1]
+        biggest1 = [0, 0, -1]
+        biggest2 = [0, 0, -1]
+        #print curr_ir
         for ir_obj in curr_ir:
-            if(biggest[2] < ir_obj["size"]):
-                biggest = [ir_obj["x"], ir_obj["y"],
-                           ir_obj["size"]]
+            if(biggest1[2] < ir_obj["size"]):
+                biggest2 = biggest1
+                biggest1 = [ir_obj["x"], ir_obj["y"],
+                            ir_obj["size"]]
+            elif(biggest2[2] < ir_obj["size"]):
+                biggest2 = [ir_obj["x"], ir_obj["y"],
+                            ir_obj["size"]]
         if(len(self.ir_vals) >= self.no_avg):
             del self.ir_vals[0]
-        self.ir_vals.append(biggest)
+        temp = [(biggest1[0]+biggest2[0])/2,
+                (biggest1[1]+biggest2[1])/2,
+                (biggest1[2]+biggest2[2])/2]
+        self.ir_vals.append(temp)
 
     def getAverage(self):
         sumX = 0
@@ -249,14 +260,28 @@ class Pointer2d(pg.ScatterPlotItem):
                 np.array([(sumY/len(self.ir_vals))]),
                 int(sumSize/len(self.ir_vals))]
 
+    def getDistance(self):
+        point = [self.ir_vals[len(self.ir_vals)-1][0],
+                 self.ir_vals[len(self.ir_vals)-1][1]]
+        wmote = [self.nodedata['accelX'],
+                 self.nodedata['accelY']]
+        dx_2 = math.pow(point[0] - wmote[0], 2)
+        dy_2 = math.pow(point[1] - wmote[1], 2)
+        dist = math.sqrt(dx_2 + dy_2)
+        return dist
+
     def button_click(self, button):
         if(len(button) >= 1):
             if(button[0][1]) and (button[0][0] == "Plus"):
-                if(self.no_avg < 20):
+                if(self.no_avg < 40):
                     self.no_avg += 1
             elif(button[0][1]) and (button[0][0] == "Minus"):
                 if(self.no_avg > 0):
                     self.no_avg -= 1
+
+    def __del__(self):
+        self.t.stop()
+        self.wm.buttons.unregister_callback(self.button_click)
 
 
 if __name__ == '__main__':
@@ -283,8 +308,8 @@ if __name__ == '__main__':
 
     pw1 = pg.PlotWidget()
     pw2 = pg.PlotWidget()
-    p2d = Pointer2d(btaddr)
-    pw2.addItem(p2d)
+    p3d = Pointer3d(btaddr)
+    pw2.addItem(p3d)
     pw2.setYRange(0, 1024)
     pw2.setXRange(0, 1024)
     layout.addWidget(pw1, 0, 1)
