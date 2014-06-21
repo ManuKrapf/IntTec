@@ -33,17 +33,19 @@ class ActivityNode(CtrlNode):
             'dataInZ': dict(io='in'),
             'dataOut': dict(io='out'),
         }
-        print "init Activity Node"
+        #print "init Activity Node"
         self._buffer = np.array([])
         self.count = 0
+        self.coords = []
+        self.filter = []
         CtrlNode.__init__(self, name, terminals=terminals)
 
     def getSquareSignal(self, y):
         kernel = [0 for i in range(0, len(y))]
         for i in range(1, len(kernel)/2):
             kernel[(i*2)-1] = 1
-        sma = np.convolve(y, kernel, mode='same')
-        return sma
+        sqsig = np.convolve(y, kernel, mode='same')
+        return sqsig
 
     def getFFT(self, y, Fs):
         #print y
@@ -54,7 +56,7 @@ class ActivityNode(CtrlNode):
         #ff = 5.5  # frequency of the signal
         #y = np.sin(2*np.pi*ff*t)
 
-        y = self.getSquareSignal(y)
+        #y = self.getSquareSignal(y)
         n = len(y)  # length of the signal
         k = arange(n)
         T = n/Fs
@@ -67,22 +69,37 @@ class ActivityNode(CtrlNode):
         for i in range(0, len(Y)-1):
             Y[i] = abs(Y[i])
 
-        return Y
+        return self.getSquareSignal(Y)
 
-    def printVals(self, x, y, z, fft):
+    def getActivity(self):
+        val = self.coords[0]
+        #sma =
+        if(val in range(600, 620)):
+            print "activity 1"
+        elif(val in range(621, 750)):
+            print "activity 2"
+        elif(val in range(751, 1000)):
+            print "activity 3"
+
+    def printVals(self):
         self.count += 1
-        if(self.count == 100):
+        x, y, z = self.coords
+        if(self.count == 50):
             print "X: "+str(x)+", Y: "+str(y)+", Z: "+str(z)
-            print fft[0]
+            #print self.filter
             self.count = 0
 
     def process(self, **kwds):
         size = int(self.ctrls['size'].value())
+        self.coords = [kwds['dataInX'],
+                       kwds['dataInY'],
+                       kwds['dataInZ']
+                       ]
         self._buffer = np.append(self._buffer, kwds['dataInX'])
         self._buffer = self._buffer[-size:]
-        fft = self.getFFT(self._buffer, 150.0)
-        #print fft
-        self.printVals(kwds['dataInX'],kwds['dataInY'],kwds['dataInZ'],fft)
+        self.filter = self.getFFT(self._buffer, 20.0)
+        self.printVals()
+        #self.getActivity()
         output = self._buffer
         return {'dataOut': output}
 
