@@ -61,6 +61,7 @@ class ActivityNode(CtrlNode):
 
     def setLabel(self, label):
         self.label = label
+        self.label.setText("Test123")
 
     def getSquareSignal(self, y):
         kernel = [0 for i in range(0, len(y))]
@@ -99,13 +100,13 @@ class ActivityNode(CtrlNode):
         z = self.coords[2]
 
         if(y in range(600, 620)):
-            label.setText("You're walking")
+            self.label.setText("You're walking")
             print "activity 1"
         elif(y in range(621, 750)):
-            label.setText("You're running")
+            self.label.setText("You're running")
             print "activity 2"
         elif(y in range(751, 1000)):
-            label.setText("You're cycling")
+            self.label.setText("You're cycling")
             print "activity 3"
 
     def printVals(self):
