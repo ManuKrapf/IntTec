@@ -101,13 +101,13 @@ class ActivityNode(CtrlNode):
         y = self.coords[1]
         z = self.coords[2]
 
-        if(x in range(600, 620)):
+        if(y in range(600, 620)):
             self.label.setText("You're walking")
             print "activity 1"
-        elif(x in range(621, 750)):
+        elif(y in range(621, 750)):
             self.label.setText("You're running")
             print "activity 2"
-        elif(x in range(751, 1000)):
+        elif(y in range(751, 1000)):
             self.label.setText("You're cycling")
             print "activity 3"
 
@@ -126,15 +126,15 @@ class ActivityNode(CtrlNode):
 
     def process(self, **kwds):
         size = int(self.ctrls['size'].value())
-        self.coords = [kwds['dataInX'],
-                       kwds['dataInY'],
-                       kwds['dataInZ']
+        self.coords = [kwds['dataInX'][0],
+                       kwds['dataInY'][0],
+                       kwds['dataInZ'][0]
                        ]
-        self._buffer = np.append(self._buffer, self.coords[0])
+        self._buffer = np.append(self._buffer, self.coords[1])
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
-        self.getActivity()
+        #self.getActivity()
         output = self._buffer
         return {'dataOut': output}
 
