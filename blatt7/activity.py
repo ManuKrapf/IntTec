@@ -90,17 +90,17 @@ class ActivityNode(CtrlNode):
 
     def getActivity(self):
         frq = np.sum(self.frq_buffer)/len(self.frq_buffer)
-        #print np.arange(0.0, 5.0) #frq
+        y = self.coords[1]
+        print self.coords[1]
 
-        if(frq >= 0.0) and (frq < 10.0):
+        if((frq >= 0.0) and (frq < 10.0)) and (y in range(550, 650)):
+            self.label.setText("You're standing")
+        elif((frq >= 0.0) and (frq < 10.0)) and (y in range(520, 550)):
             self.label.setText("You're sitting")
-            #print "activity 1"
-        elif(frq >= 10.0) and (frq < 40.0):
+        elif((frq >= 10.0) and (frq < 40.0)) and (y in range(550, 650)):
             self.label.setText("You're walking")
-            #print "activity 2"
-        elif(frq >= 40.0) and (frq < 200.0):
+        elif((frq >= 40.0) and (frq < 200.0)) and (y in range(550, 650)):
             self.label.setText("You're running")
-            #print "activity 3"
 
     def printVals(self):
         self.count += 1
