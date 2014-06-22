@@ -101,10 +101,10 @@ class ActivityNode(CtrlNode):
         y = self.coords[1]
         z = self.coords[2]
 
-        if(y in range(600, 620)):
+        if(y in range(400, 500)):
             self.label.setText("You're walking")
             print "activity 1"
-        elif(y in range(621, 750)):
+        elif(y in range(501, 590)):
             self.label.setText("You're running")
             print "activity 2"
         elif(y in range(751, 1000)):
@@ -134,7 +134,7 @@ class ActivityNode(CtrlNode):
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
-        #self.getActivity()
+        self.getActivity()
         output = self._buffer
         return {'dataOut': output}
 
