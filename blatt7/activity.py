@@ -38,6 +38,24 @@ class ActivityNode(CtrlNode):
         self.count = 0
         self.coords = []
         self.filter = []
+        self.a1 = {
+            'x': 605,
+            'y': 512,
+            'z': 550,
+            'offset': 50
+            }
+        self.a2 = {
+            'x': 0,
+            'y': 0,
+            'z': 0,
+            'offset': 50
+            }
+        self.a3 = {
+            'x': 0,
+            'y': 0,
+            'z': 0,
+            'offset': 50
+            }
         CtrlNode.__init__(self, name, terminals=terminals)
 
     def getSquareSignal(self, y):
@@ -63,7 +81,7 @@ class ActivityNode(CtrlNode):
         frq = k/T  # two sides frequency range
         frq = frq[range(n/2)]  # one side frequency range
 
-        Y = fft(y)/n  # fft computing and normalization
+        Y = fft.rfft(y)/n  # fft computing and normalization
         Y = Y[range(n/2)]
 
         for i in range(0, len(Y)-1):
@@ -72,20 +90,25 @@ class ActivityNode(CtrlNode):
         return self.getSquareSignal(Y)
 
     def getActivity(self):
-        val = self.coords[0]
-        #sma =
-        if(val in range(600, 620)):
+        x, y, z = self.coords
+
+        if(x in range(600, 620)):
             print "activity 1"
-        elif(val in range(621, 750)):
+        elif(x in range(621, 750)):
             print "activity 2"
-        elif(val in range(751, 1000)):
+        elif(x in range(751, 1000)):
             print "activity 3"
 
     def printVals(self):
         self.count += 1
         x, y, z = self.coords
-        if(self.count == 50):
+        if(self.count == 100):
             print "X: "+str(x)+", Y: "+str(y)+", Z: "+str(z)
+            fstr = ""
+            for i in range(0, len(self.filter)):
+                fstr += str(self.filter[i])+", "
+            print fstr
+            print "---------------------------------------"
             #print self.filter
             self.count = 0
 
@@ -100,7 +123,7 @@ class ActivityNode(CtrlNode):
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
         #self.getActivity()
-        output = self._buffer
+        output = self.filter #self._buffer
         return {'dataOut': output}
 
 fclib.registerNodeType(ActivityNode, [('Data',)])
@@ -156,7 +179,7 @@ if __name__ == '__main__':
     fc.connectTerminals(wiimoteNode['accelZ'], activityNode['dataInZ'])
     fc.connectTerminals(bufferNode1['dataOut'], pw1Node['In'])
     fc.connectTerminals(bufferNode2['dataOut'], pw2Node['In'])
-    fc.connectTerminals(bufferNode3['dataOut'], pw3Node['In'])
+    fc.connectTerminals(activityNode['dataOut'], pw3Node['In'])
 
     win.show()
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
