@@ -35,6 +35,7 @@ class ActivityNode(CtrlNode):
         }
         print "init Activity Node"
         self._buffer = np.array([])
+        self.frq_buffer = np.array([])
         self.label = None
         self.count = 0
         self.coords = []
@@ -73,15 +74,6 @@ class ActivityNode(CtrlNode):
         return sqsig
 
     def getFFT(self, y, Fs):
-        #print y
-        #Fs = 150.0;  # sampling rate
-        #Ts = 1.0/Fs  # sampling interval
-        #t = arange(0, 1, Ts)  # time vector
-
-        #ff = 5.5  # frequency of the signal
-        #y = np.sin(2*np.pi*ff*t)
-
-        #y = self.getSquareSignal(y)
         n = len(y)  # length of the signal
         k = arange(n)
         T = n/Fs
@@ -97,19 +89,18 @@ class ActivityNode(CtrlNode):
         return self.getSquareSignal(Y)
 
     def getActivity(self):
-        x = self.coords[0]
-        y = self.coords[1]
-        z = self.coords[2]
+        frq = np.sum(self.frq_buffer)/len(self.frq_buffer)
+        #print np.arange(0.0, 5.0) #frq
 
-        if(y in range(400, 500)):
+        if(frq >= 0.0) and (frq < 10.0):
+            self.label.setText("You're sitting")
+            #print "activity 1"
+        elif(frq >= 10.0) and (frq < 40.0):
             self.label.setText("You're walking")
-            print "activity 1"
-        elif(y in range(501, 590)):
+            #print "activity 2"
+        elif(frq >= 40.0) and (frq < 200.0):
             self.label.setText("You're running")
-            print "activity 2"
-        elif(y in range(751, 1000)):
-            self.label.setText("You're cycling")
-            print "activity 3"
+            #print "activity 3"
 
     def printVals(self):
         self.count += 1
@@ -133,7 +124,9 @@ class ActivityNode(CtrlNode):
         self._buffer = np.append(self._buffer, self.coords[1])
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
-        self.printVals()
+        self.frq_buffer = np.append(self.frq_buffer, self.filter[1].real)
+        self.frq_buffer = self.frq_buffer[-size:]
+        #self.printVals()
         self.getActivity()
         output = self._buffer
         return {'dataOut': output}
