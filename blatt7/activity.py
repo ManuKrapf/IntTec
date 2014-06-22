@@ -90,7 +90,7 @@ class ActivityNode(CtrlNode):
         return self.getSquareSignal(Y)
 
     def getActivity(self):
-<<<<<<< HEAD
+
         val = self.coords[0]
         #sma =
 
@@ -106,7 +106,6 @@ class ActivityNode(CtrlNode):
         elif(val in range(751, 1000)):
             label.setText("You're cycling")
 
-=======
         x, y, z = self.coords
 
         if(x in range(600, 620)):
@@ -115,7 +114,6 @@ class ActivityNode(CtrlNode):
             print "activity 2"
         elif(x in range(751, 1000)):
             print "activity 3"
->>>>>>> f12632aafd221cb8ce56beeac1968aa2a71d54fe
 
     def printVals(self):
         self.count += 1
@@ -140,13 +138,10 @@ class ActivityNode(CtrlNode):
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
-<<<<<<< HEAD
         self.getActivity()
         output = self._buffer
-=======
-        #self.getActivity()
+        self.getActivity()
         output = self.filter #self._buffer
->>>>>>> f12632aafd221cb8ce56beeac1968aa2a71d54fe
         return {'dataOut': output}
 
 fclib.registerNodeType(ActivityNode, [('Data',)])
