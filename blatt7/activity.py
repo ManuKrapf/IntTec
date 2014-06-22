@@ -97,17 +97,17 @@ class ActivityNode(CtrlNode):
         val = self.coords[0]
         #sma =
 
-        #if(val in range(0, 600)):
-        #    label.setText("You're not moving")
+        x, y, z = self.coords
 
-        if(val in range(600, 620)):
-            self.label.setText("You're walking")
-
-        elif(val in range(621, 750)):
-            self.label.setText("You're running")
-
-        elif(val in range(751, 1000)):
-            self.label.setText("You're cycling")
+        if(x in range(600, 620)):
+            label.setText("You're walking")
+            print "activity 1"
+        elif(x in range(621, 750)):
+            label.setText("You're running")
+            print "activity 2"
+        elif(x in range(751, 1000)):
+            label.setText("You're cycling")
+            print "activity 3"
 
     def printVals(self):
         self.count += 1
