@@ -35,6 +35,7 @@ class ActivityNode(CtrlNode):
         }
         #print "init Activity Node"
         self._buffer = np.array([])
+        self.label = None
         self.count = 0
         self.coords = []
         self.filter = []
@@ -57,6 +58,9 @@ class ActivityNode(CtrlNode):
             'offset': 50
             }
         CtrlNode.__init__(self, name, terminals=terminals)
+
+    def setLabel(self, label):
+        self.label = label
 
     def getSquareSignal(self, y):
         kernel = [0 for i in range(0, len(y))]
@@ -90,10 +94,6 @@ class ActivityNode(CtrlNode):
         return self.getSquareSignal(Y)
 
     def getActivity(self):
-<<<<<<< HEAD
-=======
-
->>>>>>> 603a55d7d327f4c095d287e6ce33204cceb1475e
         val = self.coords[0]
         #sma =
 
@@ -101,26 +101,14 @@ class ActivityNode(CtrlNode):
         #    label.setText("You're not moving")
 
         if(val in range(600, 620)):
-            label.setText("You're walking")
+            self.label.setText("You're walking")
 
         elif(val in range(621, 750)):
-            label.setText("You're running")
+            self.label.setText("You're running")
 
         elif(val in range(751, 1000)):
-            label.setText("You're cycling")
+            self.label.setText("You're cycling")
 
-<<<<<<< HEAD
-=======
-        x, y, z = self.coords
-
-        if(x in range(600, 620)):
-            print "activity 1"
-        elif(x in range(621, 750)):
-            print "activity 2"
-        elif(x in range(751, 1000)):
-            print "activity 3"
-
->>>>>>> 603a55d7d327f4c095d287e6ce33204cceb1475e
     def printVals(self):
         self.count += 1
         x, y, z = self.coords
@@ -146,11 +134,6 @@ class ActivityNode(CtrlNode):
         self.printVals()
         self.getActivity()
         output = self._buffer
-<<<<<<< HEAD
-=======
-        self.getActivity()
-        output = self.filter #self._buffer
->>>>>>> 603a55d7d327f4c095d287e6ce33204cceb1475e
         return {'dataOut': output}
 
 fclib.registerNodeType(ActivityNode, [('Data',)])
@@ -200,6 +183,7 @@ if __name__ == '__main__':
     bufferNode2 = fc.createNode('Buffer', pos=(150, 0))
     bufferNode3 = fc.createNode('Buffer', pos=(150, 0))
     activityNode = fc.createNode('Activity', pos=(150, 0))
+    activityNode.setLabel(label)
 
     fc.connectTerminals(wiimoteNode['accelX'], bufferNode1['dataIn'])
     fc.connectTerminals(wiimoteNode['accelY'], bufferNode2['dataIn'])
