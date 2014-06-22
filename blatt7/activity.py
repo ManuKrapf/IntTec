@@ -74,12 +74,19 @@ class ActivityNode(CtrlNode):
     def getActivity(self):
         val = self.coords[0]
         #sma =
+
+        #if(val in range(0, 600)):
+        #    label.setText("You're not moving")
+
         if(val in range(600, 620)):
-            print "activity 1"
+            label.setText("You're walking")
+
         elif(val in range(621, 750)):
-            print "activity 2"
+            label.setText("You're running")
+
         elif(val in range(751, 1000)):
-            print "activity 3"
+            label.setText("You're cycling")
+
 
     def printVals(self):
         self.count += 1
@@ -99,7 +106,7 @@ class ActivityNode(CtrlNode):
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
-        #self.getActivity()
+        self.getActivity()
         output = self._buffer
         return {'dataOut': output}
 
@@ -128,9 +135,12 @@ if __name__ == '__main__':
     pw1 = pg.PlotWidget()
     pw2 = pg.PlotWidget()
     pw3 = pg.PlotWidget()
-    layout.addWidget(pw1, 0, 1)
-    layout.addWidget(pw2, 1, 1)
-    layout.addWidget(pw3, 2, 1)
+    label = QtGui.QLabel("You're not moving")
+
+    layout.addWidget(label, 0, 1)
+    layout.addWidget(pw1, 1, 1)
+    layout.addWidget(pw2, 2, 1)
+    layout.addWidget(pw3, 3, 1)
     pw1.setYRange(0, 1024)
     pw2.setYRange(0, 1024)
     pw3.setYRange(0, 1024)
