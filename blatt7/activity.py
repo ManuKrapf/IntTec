@@ -81,7 +81,7 @@ class ActivityNode(CtrlNode):
         frq = k/T  # two sides frequency range
         frq = frq[range(n/2)]  # one side frequency range
 
-        Y = fft.rfft(y)/n  # fft computing and normalization
+        Y = fft(y)/n  # fft computing and normalization
         Y = Y[range(n/2)]
 
         for i in range(0, len(Y)-1):
@@ -105,7 +105,7 @@ class ActivityNode(CtrlNode):
         if(self.count == 100):
             print "X: "+str(x)+", Y: "+str(y)+", Z: "+str(z)
             fstr = ""
-            for i in range(0, len(self.filter)):
+            for i in range(0, len(self.filter)-1):
                 fstr += str(self.filter[i])+", "
             print fstr
             print "---------------------------------------"
@@ -118,12 +118,12 @@ class ActivityNode(CtrlNode):
                        kwds['dataInY'],
                        kwds['dataInZ']
                        ]
-        self._buffer = np.append(self._buffer, kwds['dataInX'])
+        self._buffer = np.append(self._buffer, kwds['dataInY'])
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
         #self.getActivity()
-        output = self.filter #self._buffer
+        output = self._buffer
         return {'dataOut': output}
 
 fclib.registerNodeType(ActivityNode, [('Data',)])
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     fc.connectTerminals(wiimoteNode['accelZ'], activityNode['dataInZ'])
     fc.connectTerminals(bufferNode1['dataOut'], pw1Node['In'])
     fc.connectTerminals(bufferNode2['dataOut'], pw2Node['In'])
-    fc.connectTerminals(activityNode['dataOut'], pw3Node['In'])
+    fc.connectTerminals(bufferNode3['dataOut'], pw3Node['In'])
 
     win.show()
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
