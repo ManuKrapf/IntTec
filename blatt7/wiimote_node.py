@@ -16,7 +16,7 @@ class BufferNode(CtrlNode):
     """
     Buffers the last n samples provided on input and provides them as a list of
     length n on output.
-    A spinbox widget allows for setting the size of the buffer. 
+    A spinbox widget allows for setting the size of the buffer.
     Default size is 32 samples.
     """
     nodeName = "Buffer"
@@ -26,12 +26,12 @@ class BufferNode(CtrlNode):
 
     def __init__(self, name):
         terminals = {
-            'dataIn': dict(io='in'),  
-            'dataOut': dict(io='out'), 
+            'dataIn': dict(io='in'),
+            'dataOut': dict(io='out'),
         }
         self._buffer = np.array([])
         CtrlNode.__init__(self, name, terminals=terminals)
-        
+
     def process(self, **kwds):
         size = int(self.ctrls['size'].value())
         self._buffer = np.append(self._buffer, kwds['dataIn'])
@@ -40,24 +40,24 @@ class BufferNode(CtrlNode):
         return {'dataOut': output}
 
 fclib.registerNodeType(BufferNode, [('Data',)])
-        
+
 class WiimoteNode(Node):
     """
     Outputs sensor data from a Wiimote.
-    
+
     Supported sensors: accelerometer (3 axis)
-    Text input box allows for setting a Bluetooth MAC address. 
+    Text input box allows for setting a Bluetooth MAC address.
     Pressing the "connect" button tries connecting to the Wiimote.
-    Update rate can be changed via a spinbox widget. Setting it to "0" 
+    Update rate can be changed via a spinbox widget. Setting it to "0"
     activates callbacks everytime a new sensor value arrives (which is
     quite often -> performance hit)
     """
     nodeName = "Wiimote"
-    
+
     def __init__(self, name):
         terminals = {
-            'accelX': dict(io='out'),  
-            'accelY': dict(io='out'), 
+            'accelX': dict(io='out'),
+            'accelY': dict(io='out'),
             'accelZ': dict(io='out'),
         }
         self.wiimote = None
@@ -82,13 +82,13 @@ class WiimoteNode(Node):
         self.layout.addWidget(self.connect_button)
         self.ui.setLayout(self.layout)
         self.connect_button.clicked.connect(self.connect_wiimote)
-        self.btaddr = "b8:ae:6e:18:5d:ab" # for ease of use
+        self.btaddr = "b8:ae:6e:1b:ad:a0" # for ease of use
         self.text.setText(self.btaddr)
         self.update_timer = QtCore.QTimer()
         self.update_timer.timeout.connect(self.update_all_sensors)
-    
+
         Node.__init__(self, name, terminals=terminals)
-        
+
 
     def update_all_sensors(self):
         if self.wiimote == None:
@@ -103,14 +103,14 @@ class WiimoteNode(Node):
 
     def ctrlWidget(self):
         return self.ui
-        
+
     def connect_wiimote(self):
         self.btaddr = str(self.text.text()).strip()
         if self.wiimote is not None:
             self.wiimote.disconnect()
             self.wiimote = None
             self.connect_button.setText("connect")
-            return 
+            return
         if len(self.btaddr) == 17 :
             self.connect_button.setText("connecting...")
             self.wiimote = wiimote.connect(self.btaddr)
@@ -131,9 +131,9 @@ class WiimoteNode(Node):
     def process(self, **kwdargs):
         x,y,z = self._acc_vals
         return {'accelX': np.array([x]), 'accelY': np.array([y]), 'accelZ': np.array([z])}
-        
+
 fclib.registerNodeType(WiimoteNode, [('Sensor',)])
-    
+
 if __name__ == '__main__':
     import sys
     app = QtGui.QApplication([])
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     ## Create an empty flowchart with a single input and output
     fc = Flowchart(terminals={
         'dataIn': {'io': 'in'},
-        'dataOut': {'io': 'out'}    
+        'dataOut': {'io': 'out'}
     })
     w = fc.widget()
 

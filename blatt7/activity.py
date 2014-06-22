@@ -33,12 +33,13 @@ class ActivityNode(CtrlNode):
             'dataInZ': dict(io='in'),
             'dataOut': dict(io='out'),
         }
-        #print "init Activity Node"
+        print "init Activity Node"
         self._buffer = np.array([])
         self.label = None
         self.count = 0
         self.coords = []
         self.filter = []
+        """
         self.a1 = {
             'x': 605,
             'y': 512,
@@ -57,6 +58,7 @@ class ActivityNode(CtrlNode):
             'z': 0,
             'offset': 50
             }
+        """
         CtrlNode.__init__(self, name, terminals=terminals)
 
     def setLabel(self, label):
@@ -99,13 +101,13 @@ class ActivityNode(CtrlNode):
         y = self.coords[1]
         z = self.coords[2]
 
-        if(y in range(600, 620)):
+        if(x in range(600, 620)):
             self.label.setText("You're walking")
             print "activity 1"
-        elif(y in range(621, 750)):
+        elif(x in range(621, 750)):
             self.label.setText("You're running")
             print "activity 2"
-        elif(y in range(751, 1000)):
+        elif(x in range(751, 1000)):
             self.label.setText("You're cycling")
             print "activity 3"
 
@@ -128,7 +130,7 @@ class ActivityNode(CtrlNode):
                        kwds['dataInY'],
                        kwds['dataInZ']
                        ]
-        self._buffer = np.append(self._buffer, kwds['dataInY'])
+        self._buffer = np.append(self._buffer, self.coords[0])
         self._buffer = self._buffer[-size:]
         self.filter = self.getFFT(self._buffer, 20.0)
         self.printVals()
