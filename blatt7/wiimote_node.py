@@ -82,7 +82,7 @@ class WiimoteNode(Node):
         self.layout.addWidget(self.connect_button)
         self.ui.setLayout(self.layout)
         self.connect_button.clicked.connect(self.connect_wiimote)
-        self.btaddr = "b8:ae:6e:1b:ad:a0" # for ease of use
+        self.btaddr = "b8:ae:6e:1b:ad:a1" # for ease of use
         self.text.setText(self.btaddr)
         self.update_timer = QtCore.QTimer()
         self.update_timer.timeout.connect(self.update_all_sensors)
