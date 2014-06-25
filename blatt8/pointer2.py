@@ -106,14 +106,14 @@ class GestureRecognition(object):
 
     def recognize(self, points, templates):
         b = float("inf")
-        trec
+        trec = None
         for t in templates:
             d = self.distanceAtBestAngle(points, t, 45, -45, 2)
             if(d < b):
                 b = d
                 trec = t
-        score = 1-(b/0.5*math.sqrt(math.pow(size, 2)+math.pow(size, 2))
-        return 0 # return template and score!!!
+        score = 1-(b/0.5*math.sqrt(math.pow(size, 2)+math.pow(size, 2)))
+        return score  # return template and score!!!
 
     def distanceAtBestAngle(self, points, temp, ta, tb, tdelta):
         phi = 0.5*(-1+math.sqrt(5))
@@ -121,7 +121,7 @@ class GestureRecognition(object):
         f1 = self.distanceAtAngle(points, temp, x1)
         x2 = (1-phi)*ta + phi*tb
         f2 = self.distanceAtAngle(points, temp, x2)
-        while(abs(tb-ta) > tdelta:
+        while(abs(tb-ta) > tdelta):
             if(f1 < f2):
                 tb = x2
                 x2 = x1
