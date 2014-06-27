@@ -14,10 +14,40 @@ import matplotlib.pyplot as plt
 from matplotlib import *
 
 
+class Template(object):
+
+    def __init__(self, name, points=[]):
+        super(Template, self).__init__()
+        self.name = ""
+        self.points = points
+
+    def setPoints(self, points):
+        self.points = points
+
+
 class GestureRecognition(object):
 
-    def __init__(self):
+    def __init__(self, size=100):
         super(GestureRecognition, self).__init__()
+        self.templates = []
+        self.size = size
+
+    def recognizeGesture(self, points):
+        newPoints = self.processRawData(points)
+        temp = self.recognize(newPoints, self.templates)
+        return temp
+
+    def storeTemplate(self, name, points):
+        newPoints = self.processRawData(points)
+        temp = Template(name, newPoints)
+        self.templates.append(temp)
+
+    def processRawData(self, points):
+        newPoints = self.resample(points)
+        newPoints = self.rotateToZero(newPoints)
+        newPoints = self.scaleToSquare(newPoints)
+        newPoints = self.translateToOrigin(newPoints)
+        return newPoints
 
     def resample(self, points, step=64):
         newPoints = []
@@ -76,12 +106,12 @@ class GestureRecognition(object):
         cId[1] /= len(points)
         return cId
 
-    def scaleToSquare(self, points, size):
+    def scaleToSquare(self, points):
         newPoints = []
         b = self.getBoundingBox(points)
         for p in points:
-            qx = p[0]*(size/b[0])
-            qy = p[1]*(size/b[0])
+            qx = p[0]*(self.size/b[2])
+            qy = p[1]*(self.size/b[3])
             newPoints.append([qx, qy])
         return newPoints
 
@@ -112,8 +142,8 @@ class GestureRecognition(object):
             if(d < b):
                 b = d
                 trec = t
-        score = 1-(b/0.5*math.sqrt(math.pow(size, 2)+math.pow(size, 2)))
-        return score  # return template and score!!!
+        score = 1-(b/0.5*math.sqrt(math.pow(self.size, 2)+math.pow(self.size, 2)))
+        return {'template': trec, 'score': score}
 
     def distanceAtBestAngle(self, points, temp, ta, tb, tdelta):
         phi = 0.5*(-1+math.sqrt(5))
@@ -160,7 +190,6 @@ class Pointer(QtGui.QDialog):
         self.step = 64
         self.t = QtCore.QTimer()
         self.t.timeout.connect(self.updateData)
-        self.t.start(50)
         self.initPlot()
 
     def initPlot(self):
@@ -235,6 +264,36 @@ class Pointer(QtGui.QDialog):
         return [np.array([(sumX/len(self.ir_vals))]),
                 np.array([(sumY/len(self.ir_vals))]),
                 int(sumSize/len(self.ir_vals))]
+
+    def button_click(self, button):
+        if(len(button) >= 1):
+            if(button[0][0] == "A"):
+                if(button[0][1]):
+                    self.startRecognition()
+                else:
+                    self.stopRecognition()
+            elif(button[0][0] == "B"):
+                if(button[0][1]):
+                    self.startRecording()
+                else:
+                    self.stopRecording()
+
+    def startRecognition(self):
+        self.ir_vals = []
+        self.t.start(50)
+
+    def stopRecognition(self):
+        self.t.stop()
+        temp = self.gr.recognizeGesture(self.ir_vals)
+        print(temp)
+
+    def startRecording(self):
+        self.ir_vals = []
+        self.t.start(50)
+
+    def stopRecording(self):
+        self.t.stop()
+        self.gr.storeTemplate("test", self.ir_vals)
 
 
 if __name__ == '__main__':
