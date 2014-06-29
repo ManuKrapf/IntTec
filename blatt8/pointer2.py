@@ -250,7 +250,7 @@ class Pointer(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(Pointer, self).__init__(parent)
-        self.btaddr = "b8:ae:6e:1b:ad:a0"
+        self.btaddr = "E0:0C:7F:30:17:7D"  # "b8:ae:6e:1b:ad:a0"
         self.wm = wiimote.connect(self.btaddr)
         self.wm.buttons.register_callback(self.button_click)
         self.gr = GestureRecognition()
@@ -371,7 +371,14 @@ class Pointer(QtGui.QDialog):
     def stopRecording(self):
         self.status.setText("stop Recording")
         self.recPoints = False
-        self.gr.storeTemplate("test", self.ir_vals)
+
+        # open dialog to allow custom template names via user input
+        text, ok = QtGui.QtInputDialog.getText(self, "Save Template",
+                                               "Template Name:")
+
+        # if OK-button is pressed, save template name and points
+        if (ok):
+            self.gr.storeTemplate(str(text), self.ir_vals)
 
 
 if __name__ == '__main__':
