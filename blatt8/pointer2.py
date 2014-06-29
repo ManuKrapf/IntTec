@@ -207,7 +207,8 @@ class GestureRecognition(object):
             if(d < b):
                 b = d
                 trec = t
-        score = 1-(b/0.5*math.sqrt(math.pow(self.size, 2)+math.pow(self.size, 2)))
+        score = 1-(b/0.5*math.sqrt(math.pow(self.size, 2) +
+                                   math.pow(self.size, 2)))
         return {'template': trec, 'score': score}
 
     def distanceAtBestAngle(self, points, temp, ta, tb, tdelta):
@@ -250,8 +251,8 @@ class Pointer(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(Pointer, self).__init__(parent)
-        #self.btaddr = "E0:0C:7F:30:17:7D"
-        self.btaddr = "b8:ae:6e:1b:ad:a0"
+        self.btaddr = "E0:0C:7F:30:17:7D"
+        #self.btaddr = "b8:ae:6e:1b:ad:a0"
         self.wm = wiimote.connect(self.btaddr)
         self.wm.buttons.register_callback(self.button_click)
         self.gr = GestureRecognition()
@@ -301,7 +302,7 @@ class Pointer(QtGui.QDialog):
         ax.hold(False)
         if(self.recPoints):
             data = self.ir_vals
-            ax.plot(*zip(*data), ls="solid", marker='o', color='r')
+            ax.plot(*list(zip(*data)), ls="solid", marker='o', color='r')
         else:
             data = self.curPos
             ax.plot([data[0]], [data[1]], ls="solid", marker='o', color='r')
