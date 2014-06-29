@@ -376,6 +376,11 @@ class Pointer(QtGui.QDialog):
         text, ok = QtGui.QtInputDialog.getText(self, "Save Template",
                                                "Template Name:")
 
+        for i in range(1, len(self.templates)):
+            if(self.templates[i][0] == text):
+                message = "Template name is  already in use "
+                QtGui.QMessageBox.critical(self, "Error", message)
+
         # if OK-button is pressed, save template name and points
         if (ok):
             self.gr.storeTemplate(str(text), self.ir_vals)
