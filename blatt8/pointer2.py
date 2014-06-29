@@ -250,8 +250,8 @@ class Pointer(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(Pointer, self).__init__(parent)
-        #self.btaddr = "E0:0C:7F:30:17:7D"
-        self.btaddr = "b8:ae:6e:1b:ad:a0"
+        self.btaddr = "E0:0C:7F:30:17:7D"
+        #self.btaddr = "b8:ae:6e:1b:ad:a0"
         self.wm = wiimote.connect(self.btaddr)
         self.wm.buttons.register_callback(self.button_click)
         self.gr = GestureRecognition()
