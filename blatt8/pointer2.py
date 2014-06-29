@@ -250,8 +250,8 @@ class Pointer(QtGui.QDialog):
 
     def __init__(self, parent=None):
         super(Pointer, self).__init__(parent)
-        self.btaddr = "E0:0C:7F:30:17:7D"
-        #self.btaddr = "b8:ae:6e:1b:ad:a0"
+        #self.btaddr = "E0:0C:7F:30:17:7D"
+        self.btaddr = "b8:ae:6e:1b:ad:a0"
         self.wm = wiimote.connect(self.btaddr)
         self.wm.buttons.register_callback(self.button_click)
         self.gr = GestureRecognition()
@@ -261,8 +261,9 @@ class Pointer(QtGui.QDialog):
         self.recPoints = False
         self.step = 64
         self.t = QtCore.QTimer()
+        self.t.setInterval(50)
         self.t.timeout.connect(self.updateData)
-        self.t.start(50)
+        self.t.start()
         self.initPlot()
 
     def initPlot(self):
@@ -374,8 +375,8 @@ class Pointer(QtGui.QDialog):
         self.recPoints = False
 
         # open dialog to allow custom template names via user input
-        text, ok = QtGui.QtInputDialog.getText(self, "Save Template",
-                                               "Template Name:")
+        text, ok = QtGui.QInputDialog.getText(self, "Save Template",
+                                              "Template Name:")
 
         for i in range(1, len(self.templates)):
             if(self.templates[i][0] == text):
